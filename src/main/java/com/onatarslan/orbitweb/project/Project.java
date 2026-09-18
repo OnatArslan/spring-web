@@ -34,6 +34,12 @@ public class Project {
 
     }
 
+    public Project(String name, Instant createdAt) {
+        this.name = name;
+        this.createdAt = createdAt;
+        this.updatedAt = createdAt;
+    }
+
     public UUID getId() {
         return id;
     }

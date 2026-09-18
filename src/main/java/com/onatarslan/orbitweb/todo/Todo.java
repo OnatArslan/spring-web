@@ -44,6 +44,16 @@ public class Todo {
     protected Todo() {
     }
 
+    public Todo(Project project, String title, String description, TodoStatus status, Instant createdAt, Instant updatedAt, LocalDate dueDate) {
+        this.project = project;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.dueDate = dueDate;
+    }
+
     public UUID getId() {
         return id;
     }
