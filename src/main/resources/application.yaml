@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: orbit-web
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orbit_web
+    username: orbit
+    password: orbit
+  jpa:
+    open-in-view: false # do not show inner sql
+    hibernate:
+      ddl-auto: validate # just validate do not create schema based on entities
+server:
+  port: 8080
