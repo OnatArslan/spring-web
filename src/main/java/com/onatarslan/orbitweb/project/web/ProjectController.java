@@ -4,6 +4,7 @@ import com.onatarslan.orbitweb.project.Project;
 import com.onatarslan.orbitweb.project.ProjectService;
 import com.onatarslan.orbitweb.project.web.dto.CreateProjectRequest;
 import com.onatarslan.orbitweb.project.web.dto.ProjectResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class ProjectController {
         // no need for required true and name here but I added for example purpose
 
         return projectService.findById(projectId)
-                .map(ProjectResponse::from)
+                .map(ProjectWebMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -37,12 +38,12 @@ public class ProjectController {
 
     @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectResponse> createProject(
-            @RequestBody() CreateProjectRequest request
+            @Valid @RequestBody CreateProjectRequest request
     ) {
 
-        Project project = projectService.create(request.name());
+        Project project = projectService.create(request.name().strip());
 
-        ProjectResponse response = ProjectResponse.from(project);
+        ProjectResponse response = ProjectWebMapper.toResponse(project);
 
         URI location = URI.create("api/v1/projects" + response.id());
 
