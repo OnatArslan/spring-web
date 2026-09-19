@@ -1,10 +1,10 @@
-package com.onatarslan.orbitweb.todo.web.dto;
+package com.onatarslan.orbitweb.todo.dto;
 
 import com.onatarslan.orbitweb.todo.TodoStatus;
 
 import java.time.LocalDate;
 
-public record PatchTodoRequest(
+public record UpdateTodoRequest(
         String title,
         String description,
         TodoStatus status,

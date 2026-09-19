@@ -1,13 +1,12 @@
-package com.onatarslan.orbitweb.todo.web.dto;
+package com.onatarslan.orbitweb.todo.dto;
 
 import com.onatarslan.orbitweb.todo.TodoStatus;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
-public record TodoSummaryResponse(
-        UUID id,
+public record PatchTodoRequest(
         String title,
+        String description,
         TodoStatus status,
         LocalDate dueDate
 ) {

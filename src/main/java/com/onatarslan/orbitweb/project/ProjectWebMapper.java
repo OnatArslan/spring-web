@@ -1,7 +1,6 @@
-package com.onatarslan.orbitweb.project.web;
+package com.onatarslan.orbitweb.project;
 
-import com.onatarslan.orbitweb.project.Project;
-import com.onatarslan.orbitweb.project.web.dto.ProjectResponse;
+import com.onatarslan.orbitweb.project.dto.ProjectResponse;
 
 public class ProjectWebMapper {
 

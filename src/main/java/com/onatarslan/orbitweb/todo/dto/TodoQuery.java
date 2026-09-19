@@ -1,4 +1,4 @@
-package com.onatarslan.orbitweb.todo.web.dto;
+package com.onatarslan.orbitweb.todo.dto;
 
 
 import com.onatarslan.orbitweb.todo.TodoStatus;

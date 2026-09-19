@@ -1,9 +1,7 @@
-package com.onatarslan.orbitweb.project.web;
+package com.onatarslan.orbitweb.project;
 
-import com.onatarslan.orbitweb.project.Project;
-import com.onatarslan.orbitweb.project.ProjectService;
-import com.onatarslan.orbitweb.project.web.dto.CreateProjectRequest;
-import com.onatarslan.orbitweb.project.web.dto.ProjectResponse;
+import com.onatarslan.orbitweb.project.dto.CreateProjectRequest;
+import com.onatarslan.orbitweb.project.dto.ProjectResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,7 @@
-package com.onatarslan.orbitweb.todo.web;
+package com.onatarslan.orbitweb.todo;
 
-import com.onatarslan.orbitweb.todo.Todo;
-import com.onatarslan.orbitweb.todo.web.dto.TodoDetailResponse;
-import com.onatarslan.orbitweb.todo.web.dto.TodoSummaryResponse;
+import com.onatarslan.orbitweb.todo.dto.TodoDetailResponse;
+import com.onatarslan.orbitweb.todo.dto.TodoSummaryResponse;
 
 public class TodoWebMapper {
 

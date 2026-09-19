@@ -1,4 +1,4 @@
-package com.onatarslan.orbitweb.project.web.dto;
+package com.onatarslan.orbitweb.project.dto;
 
 import com.onatarslan.orbitweb.project.Project;
 
