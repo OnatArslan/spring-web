@@ -5,18 +5,28 @@ import com.onatarslan.orbitweb.project.exception.ProjectNameConflictException;
 import com.onatarslan.orbitweb.project.exception.ProjectNotFoundException;
 import com.onatarslan.orbitweb.todo.exception.InvalidTodoStatusTransitionException;
 import com.onatarslan.orbitweb.todo.exception.TodoNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.jspecify.annotations.Nullable;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
 import java.time.Instant;
+import java.util.List;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+
+    /*
+     *
+     *
+     * APPLICATION ERRORS
+     *
+     */
     @ExceptionHandler(ProjectNotFoundException.class)
     public ProblemDetail handleProjectNotFoundException(ProjectNotFoundException exception) {
         return createProblem(
@@ -65,6 +75,49 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 "INVALID_TODO_STATUS_TRANSITION",
                 "The requested todo status transition is not allowed.",
                 "invalid-todo-status-transition"
+        );
+    }
+
+    /*
+     *
+     * SPRING EXCEPTIONS
+     *
+     * */
+    private record FieldViolation(
+            String field,
+            String message
+    ) {
+
+    }
+
+    @Override
+    protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
+    ) {
+        ProblemDetail problem = createProblem(
+                HttpStatus.BAD_REQUEST,
+                "Validation failed",
+                "VALIDATION_FAILED",
+                "Request validation failed.",
+                "validation-failed"
+        );
+
+        List<FieldViolation> violations = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> new FieldViolation(error.getField(), error.getDefaultMessage()))
+                .toList();
+
+
+        return handleExceptionInternal(
+                ex,
+                problem,
+                headers,
+                status,
+                request
         );
     }
 
