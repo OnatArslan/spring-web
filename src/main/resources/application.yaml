@@ -6,8 +6,16 @@ spring:
     username: orbit
     password: orbit
   jpa:
-    open-in-view: false # do not show inner sql
+    open-in-view: false # do not show inner SQL
     hibernate:
       ddl-auto: validate # just validate do not create schema based on entities
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+logging:
+  pattern:
+    level: "%5p [requestId:%X{requestId:-}]"
 server:
   port: 8080

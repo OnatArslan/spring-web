@@ -2,6 +2,7 @@ package com.onatarslan.orbitweb.project;
 
 import com.onatarslan.orbitweb.project.dto.CreateProjectRequest;
 import com.onatarslan.orbitweb.project.dto.ProjectResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,12 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> getProject(
-            @PathVariable(required = true, name = "projectId") UUID projectId
+            @PathVariable(required = true, name = "projectId") UUID projectId,
+            HttpServletRequest request
     ) {
         // no need for required true and name here but I added for example purpose
+
+        System.out.println(request.getAttribute("name"));
 
         return projectService.findById(projectId)
                 .map(ProjectWebMapper::toResponse)

@@ -1,6 +1,7 @@
 package com.onatarslan.orbitweb.common.error;
 
 
+import com.onatarslan.orbitweb.common.tracing.CorrelationIdFilter;
 import com.onatarslan.orbitweb.project.exception.ProjectNameConflictException;
 import com.onatarslan.orbitweb.project.exception.ProjectNotFoundException;
 import com.onatarslan.orbitweb.todo.exception.InvalidTodoStatusTransitionException;
@@ -83,12 +84,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * SPRING EXCEPTIONS
      *
      * */
-    private record FieldViolation(
-            String field,
-            String message
-    ) {
 
-    }
 
     @Override
     protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -97,6 +93,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatusCode status,
             WebRequest request
     ) {
+
+
+        List<FieldViolation> violations = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> new FieldViolation(error.getField(), error.getCode(), error.getDefaultMessage()))
+                .toList();
+
         ProblemDetail problem = createProblem(
                 HttpStatus.BAD_REQUEST,
                 "Validation failed",
@@ -105,12 +109,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 "validation-failed"
         );
 
-        List<FieldViolation> violations = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> new FieldViolation(error.getField(), error.getDefaultMessage()))
-                .toList();
-
+        problem.setProperty("violations", violations);
 
         return handleExceptionInternal(
                 ex,
@@ -120,6 +119,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 request
         );
     }
+
 
     private ProblemDetail createProblem(
             HttpStatus status,
@@ -135,6 +135,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         );
         problem.setProperty("code", code);
         problem.setProperty("occuredAt", Instant.now());
+
+
+        CorrelationIdFilter.getCorrelationId()
+                .ifPresent((correlationId) -> problem.setProperty("correlationId", correlationId));
+
+
         return problem;
     }
 
