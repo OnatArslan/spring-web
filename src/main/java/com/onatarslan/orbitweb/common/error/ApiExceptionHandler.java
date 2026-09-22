@@ -111,7 +111,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         problem.setProperty("violations", violations);
 
-        return handleExceptionInternal(
+        return handleExceptionInternal( // this method is important
                 ex,
                 problem,
                 headers,
