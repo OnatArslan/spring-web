@@ -29,14 +29,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      *
      */
     @ExceptionHandler(ProjectNotFoundException.class)
-    public ProblemDetail handleProjectNotFoundException(ProjectNotFoundException exception) {
-        return createProblem(
+    public ProblemDetail handleProjectNotFoundException(ProjectNotFoundException exception, HttpRequest request) {
+//        handler method can take HttpServletRequest, HttpServletResponse, WebRequest, NativeWebRequest, HandlerMethod, HttpSession, Principal, HttpMethod, Locale, ZoneId, @RequestAttribute, @SessionAttribute
+        ProblemDetail problem = createProblem(
                 HttpStatus.NOT_FOUND,
                 "Project not found",
                 "PROJECT_NOT_FOUND",
                 "Project '%s' not found".formatted(exception.getProjectId()),
                 "project-not-found"
         );
+        problem.setInstance(request.getURI());
+        return problem;
     }
 
     @ExceptionHandler(TodoNotFoundException.class)
